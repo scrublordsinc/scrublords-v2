@@ -43,23 +43,16 @@ public class Enemy {
         moveSet = new MoveSet(false, false, false, false, false);
     }
 
-    private Random r = new Random();
-    private int Low = 200;
-    private int High = 300;
-
     public void spawnEnemies(TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies) {
-        if (collision.dy == 0) {
-
-            Enemy enemy;
-            Point[] enemySpawnPoint = new Point[]{
-                    new Point(200, 200),
-                    new Point(150, 200)
-            };
-            for (Point spawnPoint : enemySpawnPoint) {
-                enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
-                enemy.collision.characterMapPlacement.setPosition(spawnPoint.x, spawnPoint.y);
-                enemies.add(enemy);
-            }
+        Enemy enemy;
+        Point[] enemySpawnPoint = new Point[]{
+                new Point(200, 200),
+                new Point(150, 200)
+        };
+        for (Point spawnPoint : enemySpawnPoint) {
+            enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
+            enemy.collision.characterMapPlacement.setPosition(spawnPoint.x, spawnPoint.y);
+            enemies.add(enemy);
         }
     }
 
@@ -107,10 +100,12 @@ public class Enemy {
             moveSet.right = false;
             moveSet.left = true;
             facingRight = false;
+            collision.characterMapPlacement.y -= 1;
         } else if (moveSet.left && collision.dx == 0) {
             moveSet.right = true;
             moveSet.left = false;
             facingRight = true;
+            collision.characterMapPlacement.y -= 1;
         }
         visualization.update();
     }

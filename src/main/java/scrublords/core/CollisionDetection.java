@@ -25,10 +25,10 @@ public class CollisionDetection {
     protected double ydest;
     public double xtemp;
     public double ytemp;
-    protected boolean topLeft;
-    protected boolean topRight;
-    protected boolean bottomLeft;
-    protected boolean bottomRight;
+    public boolean topLeft;
+    public boolean topRight;
+    public boolean bottomLeft;
+    public boolean bottomRight;
     public boolean falling;
     public MapPlacement characterMapPlacement;
 
@@ -111,7 +111,7 @@ public class CollisionDetection {
         }
     }
 
-    private void calculateCorners(double x, double y) {
+    public void calculateCorners(double x, double y) {
         int leftTile = (int) (x - cwidth / 2) / tileSize;
         int rightTile = (int) (x + cwidth / 2 - 1) / tileSize;
         int topTile = (int) (y - cheight / 2) / tileSize;

@@ -27,6 +27,7 @@ public class LevelOne implements State {
     private ArrayList<Enemy> enemies;
     private EnemyMovement enemyMovement;
     private Slugger slugger;
+    private int enemyNumber = 10;
 
     public LevelOne() {
         init();
@@ -53,7 +54,7 @@ public class LevelOne implements State {
 
         enemies = new ArrayList<>();
         Enemy enemy = new Enemy(tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement);
-        enemy.spawnEnemies(tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies);
+        enemy.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies);
     }
 
     @Override

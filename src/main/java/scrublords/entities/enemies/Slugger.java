@@ -16,7 +16,7 @@ public class Slugger {
     public CollisionDetection collision;
     public SpriteDimensions spriteDimensions;
     public SpriteSheet spriteSheet;
-    public EnemyStats enemyStats = new EnemyStats(2, 2, false, false, 0, false, 1, new ArrayList<>(), new int[]{1});
+    public EnemyStats enemyStats = new EnemyStats(2, 2, false, false, 0, false, 1, new ArrayList<>(), new int[]{3});
     public Actions action = new ActionsBuilder().buildAnimations();
     public Movement movement;
     public Visualization visualization;

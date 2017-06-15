@@ -7,8 +7,8 @@ import scrublords.entities.enemies.Enemy;
  * @author Nikolay Zahariev <nikolay.g.zahariev@gmail.com>.
  */
 public class EnemyMovement {
-    public Player player;
-    public Enemy enemy;
+    private Player player;
+    private Enemy enemy;
 
     public EnemyMovement(Player player, Enemy enemy) {
         this.player = player;
@@ -16,7 +16,7 @@ public class EnemyMovement {
     }
 
     public void moveToHero() {
-        if (checkHeroPosition(enemy)) {
+        if (checkHeroPosition()) {
             if (enemy.collision.characterMapPlacement.x < player.collision.characterMapPlacement.x + 100) {
                 enemy.moveSet.right = false;
                 enemy.moveSet.left = true;
@@ -34,14 +34,26 @@ public class EnemyMovement {
                 enemy.moveSet.left = false;
             }
         }
-        enemy.moveSet.jumping = jump(enemy);
+        enemy.moveSet.jumping = jump();
     }
 
-    private boolean checkHeroPosition(Enemy enemy) {
+    private boolean checkHeroPosition() {
         return enemy.collision.characterMapPlacement.x > player.collision.characterMapPlacement.x;
     }
 
-    private boolean jump(Enemy enemy) {
-        return (enemy.collision.characterMapPlacement.y > player.collision.characterMapPlacement.y) && (enemy.collision.characterMapPlacement.y <= 200);
+    private boolean jump() {
+        return heroIsHigher() && (heroOnLeft() || heroOnRight());
+    }
+
+    private boolean heroOnLeft() {
+        return enemy.collision.characterMapPlacement.x > player.collision.characterMapPlacement.x - 50 && enemy.collision.characterMapPlacement.x < player.collision.characterMapPlacement.x;
+    }
+
+    private boolean heroOnRight() {
+        return enemy.collision.characterMapPlacement.x < player.collision.characterMapPlacement.x + 50 && enemy.collision.characterMapPlacement.x > player.collision.characterMapPlacement.x;
+    }
+
+    private boolean heroIsHigher() {
+        return enemy.collision.characterMapPlacement.y > player.collision.characterMapPlacement.y;
     }
 }

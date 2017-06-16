@@ -61,10 +61,6 @@ public class Player {
     }
 
     public void update() {
-        if (collision.characterMapPlacement.y > 220) {
-            isDead();
-            return;
-        }
         getNextPosition();
         collision.checkTileMapCollision();
         collision.characterMapPlacement.setPosition(collision.xtemp, collision.ytemp);

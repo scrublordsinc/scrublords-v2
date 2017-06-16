@@ -8,8 +8,6 @@ import scrublords.entities.core.*;
 import scrublords.tilemaps.TileMap;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * @author Nikolay Zahariev <nikolay.g.zahariev@gmail.com>.
@@ -17,18 +15,14 @@ import java.util.Random;
 public class Enemy {
     public CollisionDetection collision;
     public MoveSet moveSet;
-    private SpriteDimensions spriteDimensions;
+    public EnemyStats enemyStats;
     public Movement movement;
+    private SpriteDimensions spriteDimensions;
     private Visualization visualization;
     private boolean facingRight;
     private int currentAction;
     private Actions action = new ActionsBuilder().buildAnimations();
     private SpriteSheet spriteSheet;
-    public EnemyStats enemyStats;
-    private Random randomSpawnPoint;
-    private int enemyXSpawnCoordinate;
-    private Random randomCoordinateGenerator = new Random();
-    private int enemyYSpawnCoordinate;
 
     public Enemy(TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement) {
         this.spriteSheet = spriteSheet;
@@ -47,62 +41,8 @@ public class Enemy {
         moveSet = new MoveSet(false, false, false, false, false);
     }
 
-    public void spawnEnemies(int enemyNumber, TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies) {
-        Enemy enemy;
-        Point enemySpawnPoint;
-
-        for (int i = 0; i < enemyNumber; i++) {
-            enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
-
-            while (true) {
-                enemy.enemyXSpawnCoordinate = randomCoordinateGenerator.nextInt(3000) + 50;
-                enemy.enemyYSpawnCoordinate = randomCoordinateGenerator.nextInt(200) + 50;
-                enemySpawnPoint = new Point(enemy.enemyXSpawnCoordinate, enemy.enemyYSpawnCoordinate);
-                enemy.collision.calculateCorners(enemySpawnPoint.x, enemySpawnPoint.y);
-                if ((!enemy.collision.bottomLeft && !enemy.collision.bottomRight) && (!enemy.collision.topLeft && !enemy.collision.topRight)) {
-                    continue;
-                }
-
-                if (enemy.collision.bottomLeft || enemy.collision.bottomRight) {
-                    enemy.enemyYSpawnCoordinate -= 1;
-                    enemySpawnPoint = new Point(enemy.enemyXSpawnCoordinate, enemy.enemyYSpawnCoordinate);
-                    enemy.collision.calculateCorners(enemySpawnPoint.x, enemySpawnPoint.y);
-                }
-
-                if ((!enemy.collision.bottomLeft && !enemy.collision.bottomRight) && (!enemy.collision.topLeft && !enemy.collision.topRight)) {
-                    enemy.collision.characterMapPlacement.setPosition(enemySpawnPoint.x, enemySpawnPoint.y);
-                    enemies.add(enemy);
-                    break;
-                }
-            }
-        }
-    }
-
-    private void getNextPosition() {
-        if (moveSet.left) {
-            collision.dx -= movement.moveSpeed;
-            if (collision.dx < -movement.maxSpeed) {
-                collision.dx = -movement.maxSpeed;
-            }
-        } else if (moveSet.right) {
-            collision.dx += movement.moveSpeed;
-            if (collision.dx > movement.maxSpeed) {
-                collision.dx = movement.maxSpeed;
-            }
-        }
-
-        if (moveSet.jumping && !collision.falling) {
-            collision.dy = movement.jumpStart;
-            collision.falling = true;
-        }
-
-        if (collision.falling) {
-            collision.dy += movement.fallSpeed;
-        }
-    }
-
     public void update() {
-        if (collision.characterMapPlacement.y > 220) {
+        if (collision.characterMapPlacement.y > 410) {
             isDead();
             return;
         }
@@ -171,5 +111,28 @@ public class Enemy {
         }
         enemyStats.flinching = true;
         enemyStats.flinchTimer = System.nanoTime();
+    }
+
+    private void getNextPosition() {
+        if (moveSet.left) {
+            collision.dx -= movement.moveSpeed;
+            if (collision.dx < -movement.maxSpeed) {
+                collision.dx = -movement.maxSpeed;
+            }
+        } else if (moveSet.right) {
+            collision.dx += movement.moveSpeed;
+            if (collision.dx > movement.maxSpeed) {
+                collision.dx = movement.maxSpeed;
+            }
+        }
+
+        if (moveSet.jumping && !collision.falling) {
+            collision.dy = movement.jumpStart;
+            collision.falling = true;
+        }
+
+        if (collision.falling) {
+            collision.dy += movement.fallSpeed;
+        }
     }
 }

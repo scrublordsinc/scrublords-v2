@@ -12,13 +12,16 @@ public class StateManager {
 
     public StateManager() {
         currentState = MENUSTATE;
-        placeholders = new StatePlaceholders(new MenuState(), new CharState(), new HelpState(), new SettingsState(), new LevelOne());
+        placeholders = new StatePlaceholders(new MenuState(), new CharState(), new HelpState(), new SettingsState(), new LevelOne(), new LevelTwo());
     }
 
     public void setState(int state) {
         switch (state) {
             case 4:
                 placeholders.states.set(state, new LevelOne());
+                break;
+            case 5:
+                placeholders.states.set(state, new LevelTwo());
                 break;
         }
         currentState = state;

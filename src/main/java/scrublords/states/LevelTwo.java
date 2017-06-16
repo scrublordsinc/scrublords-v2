@@ -3,9 +3,9 @@ package scrublords.states;
 import scrublords.entities.characters.Berserker;
 import scrublords.entities.characters.Lich;
 import scrublords.entities.characters.Player;
+import scrublords.entities.core.EnemyMovement;
 import scrublords.entities.core.EnemySpawner;
 import scrublords.entities.enemies.Enemy;
-import scrublords.entities.core.EnemyMovement;
 import scrublords.entities.enemies.Slugger;
 import scrublords.main.GamePanel;
 import scrublords.main.State;
@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * @author Denis Dimitrov <denis.k.dimitrov@gmail.com>.
  */
-public class LevelOne implements State {
+public class LevelTwo implements State {
     private TileMap tileMap;
     private Background background = new Background(0.1);
     private Berserker berserker;
@@ -31,9 +31,9 @@ public class LevelOne implements State {
     private EnemyMovement enemyMovement;
     private Slugger slugger;
     private int enemyNumber = 10;
-    private int mapPitfall = 220;
+    private int mapPitfall = 410;
 
-    public LevelOne() {
+    public LevelTwo() {
         init();
     }
 
@@ -41,7 +41,7 @@ public class LevelOne implements State {
     public void init() {
         tileMap = new TileMap(30);
         tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
-        tileMap.mapLoading.loadMap("/maps/levelOne.map");
+        tileMap.mapLoading.loadMap("/maps/levelTwo.map");
         tileMap.setPosition(0, 0);
         background.getResource("/backgrounds/levelone.gif");
         berserker = new Berserker(tileMap);
@@ -49,11 +49,11 @@ public class LevelOne implements State {
         slugger = new Slugger(tileMap);
         if (Objects.equals(CharState.character, "berserker")) {
             player = new Player(tileMap, berserker.spriteSheet, berserker.character, berserker.movement);
-            player.collision.characterMapPlacement.setPosition(100, 200);
+            player.collision.characterMapPlacement.setPosition(600, 390);
         }
         if (Objects.equals(CharState.character, "lich")) {
             player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
-            player.collision.characterMapPlacement.setPosition(100, 200);
+            player.collision.characterMapPlacement.setPosition(600, 380);
         }
 
         enemies = new ArrayList<>();

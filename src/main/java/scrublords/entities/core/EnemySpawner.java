@@ -12,8 +12,8 @@ import java.util.Random;
 /**
  * @author Nikolay Zahariev <nikolay.g.zahariev@gmail.com>.
  */
-public class EnemySpawn {
-    private Enemy enemy;
+public class EnemySpawner {
+    public Enemy enemy;
     private Point enemySpawnPoint;
     private Random randomCoordinateGenerator = new Random();
     private int enemyXSpawnCoordinate;

@@ -65,7 +65,9 @@ public class LevelOne implements State {
         tileMap.setPosition(GamePanel.WIDTH / 2 - player.collision.characterMapPlacement.getx(), GamePanel.HEIGHT / 2 - player.collision.characterMapPlacement.gety());
         for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
-            player.checkDamageTaken(enemy);
+            if (!player.character.flinching) {
+                player.checkDamageTaken(enemy);
+            }
             player.meleeAttack(enemy);
             enemyMovement = new EnemyMovement(player, enemy);
             enemyMovement.moveToHero();

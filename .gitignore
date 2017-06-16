@@ -4,6 +4,7 @@
 *gradle/
 *build/
 *classes/
+*.iml
 gradlew
 gradlew.bat
 settings.gradle

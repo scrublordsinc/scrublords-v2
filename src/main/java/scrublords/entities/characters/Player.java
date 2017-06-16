@@ -144,7 +144,7 @@ public class Player {
         if (character.health < 0) {
             character.health = 0;
         }
-        if (character.health == 0) {
+        if (character.health <= 0) {
             isDead();
         }
         character.flinching = true;

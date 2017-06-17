@@ -12,17 +12,15 @@ public class StatePlaceholders {
     private MenuState menuState;
     private CharState charState;
     private SettingsState settingsState;
-    private LevelOne levelOne;
-    private LevelTwo levelTwo;
     private HelpState helpState;
+    private Stage stage;
 
-    public StatePlaceholders(MenuState menuState, CharState charState, HelpState helpState, SettingsState settingsState, LevelOne levelOne, LevelTwo levelTwo) {
+    public StatePlaceholders(MenuState menuState, CharState charState, HelpState helpState, SettingsState settingsState, Stage stage) {
         this.menuState = menuState;
         this.charState = charState;
         this.settingsState = settingsState;
         this.helpState = helpState;
-        this.levelOne = levelOne;
-        this.levelTwo = levelTwo;
+        this.stage = stage;
         populateStatesArray();
     }
 
@@ -31,7 +29,6 @@ public class StatePlaceholders {
         states.add(charState);
         states.add(settingsState);
         states.add(helpState);
-        states.add(levelOne);
-        states.add(levelTwo);
+        states.add(stage);
     }
 }

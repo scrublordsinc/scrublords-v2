@@ -22,6 +22,7 @@ import java.util.Objects;
  * @author Denis Dimitrov <denis.k.dimitrov@gmail.com>.
  */
 public class Stage implements State {
+    public static int mapPitfall;
     private TileMap tileMap;
     private Background background = new Background(0.1);
     private Berserker berserker;
@@ -32,7 +33,6 @@ public class Stage implements State {
     private EnemyMovement enemyMovement;
     private Slugger slugger;
     private int enemyNumber = 10;
-    private int mapPitfall = 220;
 
     public Stage() {
         if (Objects.equals(CharState.character, "berserker")) {
@@ -41,38 +41,6 @@ public class Stage implements State {
         if (Objects.equals(CharState.character, "lich")) {
             loadLevelTwo();
         }
-    }
-
-    public void loadLevelOne() {
-        tileMap = new TileMap(30);
-        tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
-        tileMap.mapLoading.loadMap("/maps/levelOne.map");
-        tileMap.setPosition(0, 0);
-        background.getResource("/backgrounds/levelone.gif");
-        berserker = new Berserker(tileMap);
-        lich = new Lich(tileMap);
-        slugger = new Slugger(tileMap);
-        player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
-        player.collision.characterMapPlacement.setPosition(100, 200);
-        enemies = new ArrayList<>();
-        enemySpawner = new EnemySpawner();
-        enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
-    }
-
-    public void loadLevelTwo() {
-        tileMap = new TileMap(30);
-        tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
-        tileMap.mapLoading.loadMap("/maps/levelTwo.map");
-        tileMap.setPosition(0, 0);
-        background.getResource("/backgrounds/levelone.gif");
-        berserker = new Berserker(tileMap);
-        lich = new Lich(tileMap);
-        slugger = new Slugger(tileMap);
-        player = new Player(tileMap, berserker.spriteSheet, berserker.character, berserker.movement);
-        player.collision.characterMapPlacement.setPosition(600, 380);
-        enemies = new ArrayList<>();
-        enemySpawner = new EnemySpawner();
-        enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
     }
 
     @Override
@@ -144,5 +112,39 @@ public class Stage implements State {
         if (k == KeyEvent.VK_J | k == KeyEvent.VK_Z) {
             player.character.attacking = true;
         }
+    }
+
+    private void loadLevelOne() {
+        mapPitfall = 220;
+        tileMap = new TileMap(30);
+        tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
+        tileMap.mapLoading.loadMap("/maps/levelOne.map");
+        tileMap.setPosition(0, 0);
+        background.getResource("/backgrounds/levelone.gif");
+        berserker = new Berserker(tileMap);
+        lich = new Lich(tileMap);
+        slugger = new Slugger(tileMap);
+        player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
+        player.collision.characterMapPlacement.setPosition(100, 200);
+        enemies = new ArrayList<>();
+        enemySpawner = new EnemySpawner();
+        enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
+    }
+
+    private void loadLevelTwo() {
+        mapPitfall = 410;
+        tileMap = new TileMap(30);
+        tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
+        tileMap.mapLoading.loadMap("/maps/levelTwo.map");
+        tileMap.setPosition(0, 0);
+        background.getResource("/backgrounds/levelone.gif");
+        berserker = new Berserker(tileMap);
+        lich = new Lich(tileMap);
+        slugger = new Slugger(tileMap);
+        player = new Player(tileMap, berserker.spriteSheet, berserker.character, berserker.movement);
+        player.collision.characterMapPlacement.setPosition(600, 380);
+        enemies = new ArrayList<>();
+        enemySpawner = new EnemySpawner();
+        enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
     }
 }

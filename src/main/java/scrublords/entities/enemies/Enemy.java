@@ -5,6 +5,7 @@ import scrublords.core.SpriteDimensions;
 import scrublords.core.SpriteSheet;
 import scrublords.core.Visualization;
 import scrublords.entities.core.*;
+import scrublords.states.Stage;
 import scrublords.tilemaps.TileMap;
 
 import java.awt.*;
@@ -42,7 +43,7 @@ public class Enemy {
     }
 
     public void update() {
-        if (collision.characterMapPlacement.y > 410) {
+        if (collision.characterMapPlacement.y > Stage.mapPitfall) {
             isDead();
             return;
         }

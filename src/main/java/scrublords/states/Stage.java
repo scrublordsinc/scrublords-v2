@@ -9,6 +9,7 @@ import scrublords.entities.enemies.Enemy;
 import scrublords.entities.enemies.Slugger;
 import scrublords.main.GamePanel;
 import scrublords.main.State;
+import scrublords.states.CharState;
 import scrublords.tilemaps.Background;
 import scrublords.tilemaps.TileMap;
 
@@ -20,7 +21,7 @@ import java.util.Objects;
 /**
  * @author Denis Dimitrov <denis.k.dimitrov@gmail.com>.
  */
-public class LevelTwo implements State {
+public class Stage implements State {
     private TileMap tileMap;
     private Background background = new Background(0.1);
     private Berserker berserker;
@@ -31,14 +32,34 @@ public class LevelTwo implements State {
     private EnemyMovement enemyMovement;
     private Slugger slugger;
     private int enemyNumber = 10;
-    private int mapPitfall = 410;
+    private int mapPitfall = 220;
 
-    public LevelTwo() {
-        init();
+    public Stage() {
+        if (Objects.equals(CharState.character, "berserker")) {
+            loadLevelOne();
+        }
+        if (Objects.equals(CharState.character, "lich")) {
+            loadLevelTwo();
+        }
     }
 
-    @Override
-    public void init() {
+    public void loadLevelOne() {
+        tileMap = new TileMap(30);
+        tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
+        tileMap.mapLoading.loadMap("/maps/levelOne.map");
+        tileMap.setPosition(0, 0);
+        background.getResource("/backgrounds/levelone.gif");
+        berserker = new Berserker(tileMap);
+        lich = new Lich(tileMap);
+        slugger = new Slugger(tileMap);
+        player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
+        player.collision.characterMapPlacement.setPosition(100, 200);
+        enemies = new ArrayList<>();
+        enemySpawner = new EnemySpawner();
+        enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
+    }
+
+    public void loadLevelTwo() {
         tileMap = new TileMap(30);
         tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
         tileMap.mapLoading.loadMap("/maps/levelTwo.map");
@@ -47,18 +68,16 @@ public class LevelTwo implements State {
         berserker = new Berserker(tileMap);
         lich = new Lich(tileMap);
         slugger = new Slugger(tileMap);
-        if (Objects.equals(CharState.character, "berserker")) {
-            player = new Player(tileMap, berserker.spriteSheet, berserker.character, berserker.movement);
-            player.collision.characterMapPlacement.setPosition(600, 390);
-        }
-        if (Objects.equals(CharState.character, "lich")) {
-            player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
-            player.collision.characterMapPlacement.setPosition(600, 380);
-        }
-
+        player = new Player(tileMap, berserker.spriteSheet, berserker.character, berserker.movement);
+        player.collision.characterMapPlacement.setPosition(600, 380);
         enemies = new ArrayList<>();
         enemySpawner = new EnemySpawner();
         enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
+    }
+
+    @Override
+    public void init() {
+
     }
 
     @Override

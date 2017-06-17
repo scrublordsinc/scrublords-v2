@@ -82,12 +82,13 @@ public class CharState implements State {
                 break;
             case 1:
                 character = "lich";
-                GamePanel.stateManager.setState(5);
+                GamePanel.stateManager.setState(4);
                 break;
             case 2:
                 break;
             case 3:
                 GamePanel.stateManager.setState(0);
+                break;
         }
     }
 }

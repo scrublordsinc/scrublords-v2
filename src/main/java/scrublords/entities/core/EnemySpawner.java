@@ -3,6 +3,7 @@ package scrublords.entities.core;
 import scrublords.core.SpriteSheet;
 import scrublords.entities.characters.Player;
 import scrublords.entities.enemies.Enemy;
+import scrublords.states.Stage;
 import scrublords.tilemaps.TileMap;
 
 import java.awt.*;
@@ -24,8 +25,8 @@ public class EnemySpawner {
             enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
 
             while (true) {
-                enemyXSpawnCoordinate = randomCoordinateGenerator.nextInt(3000) + 50;
-                enemyYSpawnCoordinate = randomCoordinateGenerator.nextInt(200) + 50;
+                enemyXSpawnCoordinate = randomCoordinateGenerator.nextInt(Stage.maxX);
+                enemyYSpawnCoordinate = randomCoordinateGenerator.nextInt(Stage.maxY);
                 enemySpawnPoint = new Point(enemyXSpawnCoordinate, enemyYSpawnCoordinate);
                 enemy.collision.calculateCorners(enemySpawnPoint.x, enemySpawnPoint.y);
 

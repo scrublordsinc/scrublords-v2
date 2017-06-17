@@ -23,6 +23,8 @@ import java.util.Objects;
  */
 public class Stage implements State {
     public static int mapPitfall;
+    public static int maxX;
+    public static int maxY;
     private TileMap tileMap;
     private Background background = new Background(0.1);
     private Berserker berserker;
@@ -116,6 +118,8 @@ public class Stage implements State {
 
     private void loadLevelOne() {
         mapPitfall = 220;
+        maxX = 3200;
+        maxY = 210;
         tileMap = new TileMap(30);
         tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
         tileMap.mapLoading.loadMap("/maps/levelOne.map");
@@ -133,6 +137,8 @@ public class Stage implements State {
 
     private void loadLevelTwo() {
         mapPitfall = 410;
+        maxX = 3200;
+        maxY = 400;
         tileMap = new TileMap(30);
         tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
         tileMap.mapLoading.loadMap("/maps/levelTwo.map");

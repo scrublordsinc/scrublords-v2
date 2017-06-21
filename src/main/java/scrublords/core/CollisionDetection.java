@@ -1,9 +1,7 @@
 package scrublords.core;
 
-import scrublords.entities.characters.Player;
 import scrublords.entities.core.MapPlacement;
 import scrublords.entities.enemies.Enemy;
-import scrublords.main.GamePanel;
 import scrublords.tilemaps.Tile;
 import scrublords.tilemaps.TileMap;
 
@@ -13,16 +11,11 @@ import java.awt.*;
  * @author Nikolay Zahariev <nikolay.g.zahariev@gmail.com>.
  */
 public class CollisionDetection {
-    protected TileMap tileMap;
-    protected int tileSize;
+    public int tileSize;
     public double dx;
     public double dy;
     public int cwidth;
     public int cheight;
-    protected int currRow;
-    protected int currCol;
-    protected double xdest;
-    protected double ydest;
     public double xtemp;
     public double ytemp;
     public boolean topLeft;
@@ -31,10 +24,15 @@ public class CollisionDetection {
     public boolean bottomRight;
     public boolean falling;
     public MapPlacement characterMapPlacement;
+    protected TileMap tileMap;
+    protected int currRow;
+    protected int currCol;
+    protected double xdest;
+    protected double ydest;
 
     public CollisionDetection(TileMap tileMap) {
         this.tileMap = tileMap;
-        this.tileSize = tileMap.getTileSize();
+        this.tileSize = tileMap.tileSize;
         this.characterMapPlacement = new MapPlacement(tileMap);
     }
 

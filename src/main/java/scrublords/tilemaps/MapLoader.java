@@ -5,6 +5,7 @@ import scrublords.main.GamePanel;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 /**
  * @author Nikolay Zahariev <nikolay.g.zahariev@gmail.com>.
  */
@@ -22,7 +23,7 @@ public class MapLoader {
     private int xmax;
     private int ymax;
 
-    public MapLoader(int tileSize){
+    public MapLoader(int tileSize) {
         this.tileSize = tileSize;
     }
 
@@ -35,9 +36,9 @@ public class MapLoader {
             map = new int[numRows][numCols];
             width = numCols * tileSize;
             height = numRows * tileSize;
-            xmin = GamePanel.WIDTH - width;
+            xmin = GamePanel.defaultWidth - width;
             xmax = 0;
-            ymin = GamePanel.HEIGHT - height;
+            ymin = GamePanel.defaultHeight - height;
             ymax = 0;
             String delims = "\\s+";
             for (int row = 0; row < numRows; row++) {

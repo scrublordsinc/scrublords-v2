@@ -7,24 +7,20 @@ import java.awt.*;
 public class TileMap {
     public TileLoader tileLoading;
     public MapLoader mapLoading;
-    public int numRowsToDraw;
-    public int numColsToDraw;
+    public int tileSize;
     private double tween;
-    private int tileSize;
     private int rowOffset;
     private int colOffset;
+    private int numRowsToDraw;
+    private int numColsToDraw;
 
     public TileMap(int tileSize) {
         this.tileSize = tileSize;
         tileLoading = new TileLoader(tileSize);
         mapLoading = new MapLoader(tileSize);
-        numRowsToDraw = GamePanel.HEIGHT / tileSize + 2;
-        numColsToDraw = GamePanel.WIDTH / tileSize + 2;
+        numRowsToDraw = GamePanel.defaultHeight / tileSize + 2;
+        numColsToDraw = GamePanel.defaultWidth / tileSize + 2;
         tween = 0.07;
-    }
-
-    public int getTileSize() {
-        return tileSize;
     }
 
     public int getType(int row, int col) {

@@ -180,11 +180,9 @@ public class Stage implements State {
         shuffleLevels();
         if (Objects.equals(levels.get(0), "Level One")) {
             loadLevelOne();
-            levels.remove(0);
         }
         if (Objects.equals(levels.get(0), "Level Two")) {
             loadLevelTwo();
-            levels.remove(0);
         }
     }
 }

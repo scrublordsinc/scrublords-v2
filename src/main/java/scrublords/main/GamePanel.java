@@ -12,10 +12,17 @@ import java.awt.image.BufferedImage;
  * @author Denis Dimitrov <denis.k.dimitrov@gmail.com>.
  */
 public class GamePanel extends JPanel implements Runnable, KeyListener {
+    /**
+     * scale 2 - 640x480
+     * scale 2.5 - 800x600
+     * scale 3.2 - 1024x768
+     */
     public static StateManager stateManager = new StateManager();
-    public static int WIDTH = 320;
-    public static int HEIGHT = 240;
-    public static int SCALE = 2;
+    public static int defaultWidth = 320;
+    public static int defaultHeight = 240;
+    private static double scale = 2.5;
+    private static double gameWidth = defaultWidth * scale;
+    private static double gameHeight = defaultHeight * scale;
     private Thread thread;
     private boolean running;
     private int FPS = 60;
@@ -25,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     public GamePanel() {
         super();
-        setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+        setPreferredSize(new Dimension((int) gameWidth, (int) gameHeight));
         setFocusable(true);
         requestFocus();
     }
@@ -56,7 +63,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        image = new BufferedImage(defaultWidth, defaultHeight, BufferedImage.TYPE_INT_RGB);
         graphics = image.getGraphics();
         running = true;
         long start;
@@ -90,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private void drawToScreen() {
         Graphics g2 = getGraphics();
-        g2.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
+        g2.drawImage(image, 0, 0, (int) gameWidth, (int) gameHeight, null);
         g2.dispose();
     }
 }

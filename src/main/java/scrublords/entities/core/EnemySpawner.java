@@ -14,7 +14,7 @@ import java.util.Random;
  * @author Nikolay Zahariev <nikolay.g.zahariev@gmail.com>.
  */
 public class EnemySpawner {
-    public Enemy enemy;
+    private Enemy enemy;
     private Point enemySpawnPoint;
     private Random randomCoordinateGenerator = new Random();
     private int enemyXSpawnCoordinate;
@@ -30,17 +30,17 @@ public class EnemySpawner {
                 enemySpawnPoint = new Point(enemyXSpawnCoordinate, enemyYSpawnCoordinate);
                 enemy.collision.calculateCorners(enemySpawnPoint.x, enemySpawnPoint.y);
 
-                if (ifNearPlayer(player, 150, 150) || ifNoCollision(enemy)) {
+                if (whenNearPlayer(player, 150, 150) || whenNoCollision(enemy)) {
                     continue;
                 }
 
-                if (ifBottomCollision(enemy)) {
+                if (whenBottomCollision(enemy)) {
                     enemyYSpawnCoordinate -= 1;
                     enemySpawnPoint = new Point(enemyXSpawnCoordinate, enemyYSpawnCoordinate);
                     enemy.collision.calculateCorners(enemySpawnPoint.x, enemySpawnPoint.y);
                 }
 
-                if (ifNoCollision(enemy)) {
+                if (whenNoCollision(enemy)) {
                     enemy.collision.characterMapPlacement.setPosition(enemySpawnPoint.x, enemySpawnPoint.y);
                     enemies.add(enemy);
                     break;
@@ -49,15 +49,15 @@ public class EnemySpawner {
         }
     }
 
-    private boolean ifNearPlayer(Player player, int leftMargin, int rightMargin) {
-        return enemyXSpawnCoordinate > player.collision.characterMapPlacement.x - leftMargin && enemyXSpawnCoordinate < player.collision.characterMapPlacement.x + rightMargin;
+    private boolean whenNearPlayer(Player player, int leftRange, int rightRange) {
+        return enemyXSpawnCoordinate > player.collision.characterMapPlacement.x - leftRange && enemyXSpawnCoordinate < player.collision.characterMapPlacement.x + rightRange;
     }
 
-    private boolean ifNoCollision(Enemy enemy) {
+    private boolean whenNoCollision(Enemy enemy) {
         return ((!enemy.collision.bottomLeft && !enemy.collision.bottomRight) && (!enemy.collision.topLeft && !enemy.collision.topRight));
     }
 
-    private boolean ifBottomCollision(Enemy enemy) {
+    private boolean whenBottomCollision(Enemy enemy) {
         return (enemy.collision.bottomLeft || enemy.collision.bottomRight);
     }
 }

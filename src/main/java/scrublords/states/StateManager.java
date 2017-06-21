@@ -12,7 +12,7 @@ public class StateManager {
 
     public StateManager() {
         currentState = MENUSTATE;
-        placeholders = new StatePlaceholders(new MenuState(), new CharState(), new HelpState(), new SettingsState(), new Stage());
+        placeholders = new StatePlaceholders(new MenuState(), new CharState(), new HelpState(), new SettingsState(), new Stage(), new DeathState());
     }
 
     public void setState(int state) {

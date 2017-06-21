@@ -149,7 +149,7 @@ public class Player {
 
     public void isDead() {
         character.dead = true;
-        GamePanel.stateManager.setState(0);
+        GamePanel.stateManager.setState(5);
     }
 
     private void getNextPosition() {

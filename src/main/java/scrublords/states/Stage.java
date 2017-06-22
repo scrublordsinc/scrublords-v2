@@ -1,5 +1,6 @@
 package scrublords.states;
 
+import com.badlogic.gdx.graphics.GL20;
 import scrublords.entities.characters.Berserker;
 import scrublords.entities.characters.Lich;
 import scrublords.entities.characters.Player;
@@ -36,7 +37,13 @@ public class Stage implements State {
     private Slugger slugger;
     private int enemyNumber = 10;
     private ArrayList<String> levels = new ArrayList<>();
+    private int currentChoice = 0;
     private boolean paused;
+    private String[] menuOptions = {
+            "Continue",
+            "Quit"
+    };
+
 
     public Stage() {
         if (Objects.equals(CharState.character, "berserker")) {
@@ -86,6 +93,21 @@ public class Stage implements State {
         for (Enemy enemy : enemies) {
             enemy.draw(g);
         }
+
+        if (paused) {
+            g.setColor(new Color(0, 0, 0));
+            g.setFont(new Font("Arial", Font.BOLD, 12));
+            g.drawString("Paused", 100, 70);
+            g.setFont(new Font("Arial", Font.BOLD, 12));
+            for (int i = 0; i < menuOptions.length; i++) {
+                if (i == currentChoice) {
+                    g.setColor(Color.LIGHT_GRAY);
+                } else {
+                    g.setColor(Color.BLACK);
+                }
+                g.drawString(menuOptions[i], 30, 140 + i * 15);
+            }
+        }
     }
 
     @Override
@@ -105,8 +127,22 @@ public class Stage implements State {
         if (k == KeyEvent.VK_ESCAPE) {
             paused = true;
         }
-        if (k == KeyEvent.VK_F1) {
-            paused = false;
+        if (paused) {
+            if (k == KeyEvent.VK_ENTER) {
+                select();
+            }
+            if (k == KeyEvent.VK_UP) {
+                currentChoice--;
+                if (currentChoice == -1) {
+                    currentChoice = menuOptions.length - 1;
+                }
+            }
+            if (k == KeyEvent.VK_DOWN) {
+                currentChoice++;
+                if (currentChoice == menuOptions.length) {
+                    currentChoice = 0;
+                }
+            }
         }
     }
 
@@ -127,8 +163,16 @@ public class Stage implements State {
         if (k == KeyEvent.VK_ESCAPE) {
             paused = true;
         }
-        if (k == KeyEvent.VK_F1) {
-            paused = false;
+    }
+
+    private void select() {
+        switch (currentChoice) {
+            case 0:
+                paused = false;
+                break;
+            case 1:
+                GamePanel.stateManager.setState(0);
+                break;
         }
     }
 

@@ -36,6 +36,7 @@ public class Stage implements State {
     private Slugger slugger;
     private int enemyNumber = 10;
     private ArrayList<String> levels = new ArrayList<>();
+    private boolean paused;
 
     public Stage() {
         if (Objects.equals(CharState.character, "berserker")) {
@@ -53,24 +54,26 @@ public class Stage implements State {
 
     @Override
     public void update() {
-        player.update();
-        if (player.collision.characterMapPlacement.y > mapPitfall) {
-            player.isDead();
-            return;
-        }
-        tileMap.setPosition(GamePanel.defaultWidth / 2 - player.collision.characterMapPlacement.getx(), GamePanel.defaultHeight / 2 - player.collision.characterMapPlacement.gety());
-        for (int i = 0; i < enemies.size(); i++) {
-            Enemy enemy = enemies.get(i);
-            if (!player.character.flinching) {
-                player.checkDamageTaken(enemy);
+        if (!paused) {
+            player.update();
+            if (player.collision.characterMapPlacement.y > mapPitfall) {
+                player.isDead();
+                return;
             }
-            player.meleeAttack(enemy);
-            enemyMovement = new EnemyMovement(player, enemy);
-            enemyMovement.moveToHero();
-            enemy.update();
-            if (enemy.enemyStats.dead) {
-                enemies.remove(i);
-                enemy.enemyStats.dead = false;
+            tileMap.setPosition(GamePanel.defaultWidth / 2 - player.collision.characterMapPlacement.getx(), GamePanel.defaultHeight / 2 - player.collision.characterMapPlacement.gety());
+            for (int i = 0; i < enemies.size(); i++) {
+                Enemy enemy = enemies.get(i);
+                if (!player.character.flinching) {
+                    player.checkDamageTaken(enemy);
+                }
+                player.meleeAttack(enemy);
+                enemyMovement = new EnemyMovement(player, enemy);
+                enemyMovement.moveToHero();
+                enemy.update();
+                if (enemy.enemyStats.dead) {
+                    enemies.remove(i);
+                    enemy.enemyStats.dead = false;
+                }
             }
         }
     }
@@ -99,6 +102,12 @@ public class Stage implements State {
         if (k == KeyEvent.VK_J | k == KeyEvent.VK_Z) {
             player.character.attacking = false;
         }
+        if (k == KeyEvent.VK_ESCAPE) {
+            paused = true;
+        }
+        if (k == KeyEvent.VK_F1) {
+            paused = false;
+        }
     }
 
     @Override
@@ -114,6 +123,12 @@ public class Stage implements State {
         }
         if (k == KeyEvent.VK_J | k == KeyEvent.VK_Z) {
             player.character.attacking = true;
+        }
+        if (k == KeyEvent.VK_ESCAPE) {
+            paused = true;
+        }
+        if (k == KeyEvent.VK_F1) {
+            paused = false;
         }
     }
 

@@ -39,6 +39,7 @@ public class CharState implements State {
         stylization.background.draw(graphics);
         graphics.setColor(stylization.titleColor);
         graphics.setFont(stylization.titleFont);
+        graphics.drawString("Characters", 100, 70);
         graphics.setFont(stylization.font);
         for (int i = 0; i < options.length; i++) {
             if (i == currentChoice) {

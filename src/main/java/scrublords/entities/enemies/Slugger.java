@@ -4,6 +4,7 @@ import scrublords.core.CollisionDetection;
 import scrublords.core.SpriteDimensions;
 import scrublords.core.SpriteSheet;
 import scrublords.core.Visualization;
+import scrublords.entities.characters.Player;
 import scrublords.entities.core.*;
 import scrublords.tilemaps.TileMap;
 
@@ -32,5 +33,14 @@ public class Slugger {
         visualization = new Visualization();
         visualization.setFrames(enemyStats.sprites.get(action.idle));
         visualization.setDelay(300);
+    }
+
+    public void giveExperience(Player player, Enemy enemy) {
+        if (enemy.isDead()) {
+            player.experience++;
+            if (player.experience >= player.level) {
+                player.level++;
+            }
+        }
     }
 }

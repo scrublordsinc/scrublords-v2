@@ -1,6 +1,5 @@
 package scrublords.states;
 
-import com.badlogic.gdx.graphics.GL20;
 import scrublords.entities.characters.Berserker;
 import scrublords.entities.characters.Lich;
 import scrublords.entities.characters.Player;
@@ -79,6 +78,7 @@ public class Stage implements State {
                 enemy.update();
                 if (enemy.enemyStats.dead) {
                     enemies.remove(i);
+                    slugger.giveExperience(player, enemy);
                     enemy.enemyStats.dead = false;
                 }
             }
@@ -90,6 +90,7 @@ public class Stage implements State {
         background.draw(g);
         tileMap.draw(g);
         player.draw(g);
+        g.drawString("Level " + player.level, 30, 30);
         for (Enemy enemy : enemies) {
             enemy.draw(g);
         }

@@ -9,6 +9,7 @@ import scrublords.entities.enemies.Enemy;
 import scrublords.entities.enemies.Slugger;
 import scrublords.main.GamePanel;
 import scrublords.main.State;
+import scrublords.misc.Timer;
 import scrublords.tilemaps.Background;
 import scrublords.tilemaps.TileMap;
 
@@ -17,6 +18,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Denis Dimitrov <denis.k.dimitrov@gmail.com>.
@@ -38,6 +40,9 @@ public class Stage implements State {
     private ArrayList<String> levels = new ArrayList<>();
     private int currentChoice = 0;
     private boolean paused;
+    private AtomicBoolean flag = new AtomicBoolean(true);
+    private Timer timer = new Timer(flag);
+    private Thread thread = new Thread(timer);
     private String[] menuOptions = {
             "Continue",
             "Quit"
@@ -91,6 +96,7 @@ public class Stage implements State {
         tileMap.draw(g);
         player.draw(g);
         g.drawString("Level " + player.level, 30, 30);
+        g.drawString("Timer " + timer.counter, 30, 60);
         for (Enemy enemy : enemies) {
             enemy.draw(g);
         }
@@ -244,5 +250,6 @@ public class Stage implements State {
         if (Objects.equals(levels.get(0), "Level Two")) {
             loadLevelTwo();
         }
+        thread.start();
     }
 }

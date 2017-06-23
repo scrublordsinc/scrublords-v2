@@ -27,6 +27,8 @@ public class Player {
     private Actions action = new ActionsBuilder().buildAnimations();
     private SpriteSheet spriteSheet;
     public Character character;
+    public int experience;
+    public int level = 1;
 
     public Player(TileMap tileMap, SpriteSheet spriteSheet, Character character, Movement movement) {
         this.spriteSheet = spriteSheet;

@@ -16,14 +16,13 @@ import scrublords.tilemaps.TileMap;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Denis Dimitrov <denis.k.dimitrov@gmail.com>.
  */
-public class Stage implements State {
+public class EndlessStage implements State {
     public static int mapPitfall;
     public static int maxX;
     public static int maxY;
@@ -36,8 +35,6 @@ public class Stage implements State {
     private ArrayList<Enemy> enemies;
     private EnemyMovement enemyMovement;
     private Slugger slugger;
-    private int enemyNumber = 10;
-    private ArrayList<String> levels = new ArrayList<>();
     private int currentChoice = 0;
     private boolean paused;
     private Enemy enemy;
@@ -51,12 +48,12 @@ public class Stage implements State {
             "Quit"
     };
 
-    public Stage() {
+    public EndlessStage() {
         if (Objects.equals(CharState.character, "berserker")) {
-            loadRandomLevel();
+            loadLevel();
         }
         if (Objects.equals(CharState.character, "lich")) {
-            loadRandomLevel();
+            loadLevel();
         }
     }
 
@@ -68,6 +65,10 @@ public class Stage implements State {
     @Override
     public void update() {
         if (!paused) {
+            if (spawnTimers(10, 20, 30, 40)) {
+                enemySpawner.spawnEnemies(2, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
+                spawnComplete = true;
+            }
             player.update();
             if (player.collision.characterMapPlacement.y > mapPitfall) {
                 player.isDead();
@@ -187,33 +188,7 @@ public class Stage implements State {
         }
     }
 
-    private void loadLevelOne() {
-        mapPitfall = 220;
-        maxX = 3200;
-        maxY = 210;
-        tileMap = new TileMap(30);
-        tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
-        tileMap.mapLoading.loadMap("/maps/levelOne.map");
-        tileMap.setPosition(0, 0);
-        background.getResource("/backgrounds/levelone.gif");
-        berserker = new Berserker(tileMap);
-        lich = new Lich(tileMap);
-        berserker = new Berserker(tileMap);
-        if (Objects.equals(CharState.character, "berserker")) {
-            player = new Player(tileMap, berserker.spriteSheet, berserker.character, berserker.movement);
-            player.collision.characterMapPlacement.setPosition(100, 200);
-        }
-        if (Objects.equals(CharState.character, "lich")) {
-            player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
-            player.collision.characterMapPlacement.setPosition(100, 200);
-        }
-        slugger = new Slugger(tileMap);
-        enemies = new ArrayList<>();
-        enemySpawner = new EnemySpawner();
-        enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
-    }
-
-    private void loadLevelTwo() {
+    private void loadLevel() {
         mapPitfall = 410;
         maxX = 3200;
         maxY = 400;
@@ -236,24 +211,6 @@ public class Stage implements State {
         }
         enemies = new ArrayList<>();
         enemySpawner = new EnemySpawner();
-        enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
-    }
-
-    private void shuffleLevels() {
-        levels.add("Level One");
-        levels.add("Level Two");
-        Collections.shuffle(levels);
-    }
-
-
-    private void loadRandomLevel() {
-        shuffleLevels();
-        if (Objects.equals(levels.get(0), "Level One")) {
-            loadLevelOne();
-        }
-        if (Objects.equals(levels.get(0), "Level Two")) {
-            loadLevelTwo();
-        }
         thread.start();
     }
 
@@ -267,5 +224,33 @@ public class Stage implements State {
             enemy.enemyStats.attackDamage++;
             upgradeComplete = true;
         }
+    }
+
+    private boolean spawnTimers(int firstTimer, int secondTimer, int thirdTimer, int fourthTimer) {
+        if (timer.seconds == firstTimer && !spawnComplete) {
+            return true;
+        }
+        if (timer.seconds == firstTimer + 1) {
+            spawnComplete = false;
+        }
+        if (timer.seconds == secondTimer && !spawnComplete) {
+            return true;
+        }
+        if (timer.seconds == secondTimer + 1) {
+            spawnComplete = false;
+        }
+        if (timer.seconds == thirdTimer && !spawnComplete) {
+            return true;
+        }
+        if (timer.seconds == thirdTimer + 1) {
+            spawnComplete = false;
+        }
+        if (timer.seconds == fourthTimer && !spawnComplete) {
+            return true;
+        }
+        if (timer.seconds == fourthTimer + 1) {
+            spawnComplete = false;
+        }
+        return false;
     }
 }

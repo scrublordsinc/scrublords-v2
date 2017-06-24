@@ -6,12 +6,14 @@ import scrublords.states.core.BackgroundStylization;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 /**
  * @author Denis Dimitrov <denis.k.dimitrov@gmail.com>.
  */
 public class CharState implements State {
     public static String character = "berserker";
+    public static String stage;
     private BackgroundStylization stylization = new BackgroundStylization();
     private int currentChoice = 0;
     private String[] options = {
@@ -78,18 +80,28 @@ public class CharState implements State {
     private void select() {
         switch (currentChoice) {
             case 0:
-                character = "berserker";
-                GamePanel.stateManager.setState(4);
+                checkStageType("berserker");
                 break;
             case 1:
-                character = "lich";
-                GamePanel.stateManager.setState(4);
+                checkStageType("lich");
                 break;
             case 2:
                 break;
             case 3:
                 GamePanel.stateManager.setState(0);
                 break;
+        }
+    }
+
+    private void checkStageType(String hero) {
+        character = hero;
+        while (true) {
+            if (Objects.equals(stage, "normal")) {
+                GamePanel.stateManager.setState(4);
+                break;
+            }
+            GamePanel.stateManager.setState(6);
+            break;
         }
     }
 }

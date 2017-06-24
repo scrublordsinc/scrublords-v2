@@ -14,7 +14,8 @@ public class MenuState implements State {
     private BackgroundStylization stylization = new BackgroundStylization();
     private int currentChoice = 0;
     private String[] options = {
-            "Start",
+            "Normal Stage",
+            "Endless Stage",
             "Settings",
             "Help",
             "Quit"
@@ -78,15 +79,20 @@ public class MenuState implements State {
     private void select() {
         switch (currentChoice) {
             case 0:
+                CharState.stage = "normal";
                 GamePanel.stateManager.setState(1);
                 break;
             case 1:
-                GamePanel.stateManager.setState(2);
+                CharState.stage = "endless";
+                GamePanel.stateManager.setState(1);
                 break;
             case 2:
-                GamePanel.stateManager.setState(3);
+                GamePanel.stateManager.setState(2);
                 break;
             case 3:
+                GamePanel.stateManager.setState(3);
+                break;
+            case 4:
                 System.exit(0);
         }
     }

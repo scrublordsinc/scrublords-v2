@@ -43,6 +43,7 @@ public class Stage implements State {
     private Enemy enemy;
     private AtomicBoolean flag = new AtomicBoolean(true);
     private boolean upgradeComplete;
+    private boolean spawnComplete;
     private Timer timer = new Timer(flag);
     private Thread thread = new Thread(timer);
     private String[] menuOptions = {
@@ -67,6 +68,11 @@ public class Stage implements State {
     @Override
     public void update() {
         if (!paused) {
+            if (spawnTimers(10, 20, 30, 40)) {
+                enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
+                System.out.println("enemy spawned");
+                spawnComplete = true;
+            }
             player.update();
             if (player.collision.characterMapPlacement.y > mapPitfall) {
                 player.isDead();
@@ -237,12 +243,12 @@ public class Stage implements State {
         enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
     }
 
-
     private void shuffleLevels() {
         levels.add("Level One");
         levels.add("Level Two");
         Collections.shuffle(levels);
     }
+
 
     private void loadRandomLevel() {
         shuffleLevels();
@@ -255,16 +261,44 @@ public class Stage implements State {
         thread.start();
     }
 
-    private void upgradeEnemies(Enemy enemy){
-        if (timer.seconds == 0){
+    private void upgradeEnemies(Enemy enemy) {
+        if (timer.seconds == 0) {
             upgradeComplete = false;
         }
-        if (timer.seconds == 59 && !upgradeComplete){
+        if (timer.seconds == 59 && !upgradeComplete) {
             enemy.enemyStats.maxHealth++;
             enemy.enemyStats.health++;
             enemy.enemyStats.attackDamage++;
             upgradeComplete = true;
             System.out.println(enemy.enemyStats.health);
         }
+    }
+
+    private boolean spawnTimers(int firstTimer, int secondTimer, int thirdTimer, int fourthTimer) {
+        if (timer.seconds == firstTimer && !spawnComplete) {
+            return true;
+        }
+        if (timer.seconds == firstTimer + 1) {
+            spawnComplete = false;
+        }
+        if (timer.seconds == secondTimer && !spawnComplete) {
+            return true;
+        }
+        if (timer.seconds == secondTimer + 1) {
+            spawnComplete = false;
+        }
+        if (timer.seconds == thirdTimer && !spawnComplete) {
+            return true;
+        }
+        if (timer.seconds == thirdTimer + 1) {
+            spawnComplete = false;
+        }
+        if (timer.seconds == fourthTimer && !spawnComplete) {
+            return true;
+        }
+        if (timer.seconds == fourthTimer + 1) {
+            spawnComplete = false;
+        }
+        return false;
     }
 }

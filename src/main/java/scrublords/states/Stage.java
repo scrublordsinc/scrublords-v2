@@ -102,9 +102,10 @@ public class Stage implements State {
     public void draw(Graphics g) {
         background.draw(g);
         tileMap.draw(g);
-        player.draw(g);
         g.drawString("Level " + player.level, 30, 30);
-        g.drawString("Timer " + timer.minutes + " " + timer.seconds, 30, 60);
+        g.drawString("Timer " + timer.minutes + " :" + timer.seconds, 230, 30);
+        g.drawString("Health " + player.character.health, 30, 60);
+        player.draw(g);
         for (Enemy enemy : enemies) {
             enemy.draw(g);
         }

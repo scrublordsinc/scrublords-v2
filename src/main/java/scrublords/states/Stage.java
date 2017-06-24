@@ -40,14 +40,15 @@ public class Stage implements State {
     private ArrayList<String> levels = new ArrayList<>();
     private int currentChoice = 0;
     private boolean paused;
+    private Enemy enemy;
     private AtomicBoolean flag = new AtomicBoolean(true);
+    private boolean upgradeComplete;
     private Timer timer = new Timer(flag);
     private Thread thread = new Thread(timer);
     private String[] menuOptions = {
             "Continue",
             "Quit"
     };
-
 
     public Stage() {
         if (Objects.equals(CharState.character, "berserker")) {
@@ -73,7 +74,8 @@ public class Stage implements State {
             }
             tileMap.setPosition(GamePanel.defaultWidth / 2 - player.collision.characterMapPlacement.getx(), GamePanel.defaultHeight / 2 - player.collision.characterMapPlacement.gety());
             for (int i = 0; i < enemies.size(); i++) {
-                Enemy enemy = enemies.get(i);
+                enemy = enemies.get(i);
+                upgradeEnemies(enemy);
                 if (!player.character.flinching) {
                     player.checkDamageTaken(enemy);
                 }
@@ -96,7 +98,7 @@ public class Stage implements State {
         tileMap.draw(g);
         player.draw(g);
         g.drawString("Level " + player.level, 30, 30);
-        g.drawString("Timer " + timer.counter, 30, 60);
+        g.drawString("Timer " + timer.minutes + " " + timer.seconds, 30, 60);
         for (Enemy enemy : enemies) {
             enemy.draw(g);
         }
@@ -209,7 +211,6 @@ public class Stage implements State {
         enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
     }
 
-
     private void loadLevelTwo() {
         mapPitfall = 410;
         maxX = 3200;
@@ -236,6 +237,7 @@ public class Stage implements State {
         enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
     }
 
+
     private void shuffleLevels() {
         levels.add("Level One");
         levels.add("Level Two");
@@ -251,5 +253,18 @@ public class Stage implements State {
             loadLevelTwo();
         }
         thread.start();
+    }
+
+    private void upgradeEnemies(Enemy enemy){
+        if (timer.seconds == 0){
+            upgradeComplete = false;
+        }
+        if (timer.seconds == 59 && !upgradeComplete){
+            enemy.enemyStats.maxHealth++;
+            enemy.enemyStats.health++;
+            enemy.enemyStats.attackDamage++;
+            upgradeComplete = true;
+            System.out.println(enemy.enemyStats.health);
+        }
     }
 }

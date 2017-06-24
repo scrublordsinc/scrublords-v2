@@ -6,7 +6,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Denis Dimitrov <denis.k.dimitrov@gmail.com>.
  */
 public class Timer implements Runnable {
-    public int counter;
+    public int seconds;
+    public int minutes;
     private AtomicBoolean flag;
 
     public Timer(AtomicBoolean flag) {
@@ -18,7 +19,11 @@ public class Timer implements Runnable {
         while (flag.get()) {
             try {
                 Thread.sleep(1000);
-                counter++;
+                seconds++;
+                if (seconds == 60) {
+                    minutes++;
+                    seconds = 0;
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

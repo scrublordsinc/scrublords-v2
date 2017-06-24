@@ -104,10 +104,7 @@ public class Enemy {
             return;
         }
         enemyStats.health -= damage;
-        if (enemyStats.health < 0) {
-            enemyStats.health = 0;
-        }
-        if (enemyStats.health == 0) {
+        if (enemyStats.health <= 0) {
             enemyStats.dead = true;
         }
         enemyStats.flinching = true;

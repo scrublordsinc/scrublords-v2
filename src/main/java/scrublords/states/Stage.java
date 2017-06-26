@@ -86,7 +86,6 @@ public class Stage implements State {
                 enemy.update();
                 if (enemy.enemyStats.dead) {
                     enemies.remove(i);
-                    slugger.giveExperience(player, enemy);
                     enemy.enemyStats.dead = false;
                 }
             }
@@ -94,29 +93,29 @@ public class Stage implements State {
     }
 
     @Override
-    public void draw(Graphics g) {
-        background.draw(g);
-        tileMap.draw(g);
-        g.drawString("Level " + player.level, 30, 30);
-        g.drawString("Timer " + timer.minutes + " :" + timer.seconds, 230, 30);
-        g.drawString("Health " + player.character.health, 30, 60);
-        player.draw(g);
+    public void draw(Graphics graphics) {
+        background.draw(graphics);
+        tileMap.draw(graphics);
+        graphics.drawString("Level " + player.level, 30, 30);
+        graphics.drawString("Timer " + timer.minutes + " :" + timer.seconds, 230, 30);
+        graphics.drawString("Health " + player.character.health + " / " + player.character.maxHealth, 30, 60);
+        player.draw(graphics);
         for (Enemy enemy : enemies) {
-            enemy.draw(g);
+            enemy.draw(graphics);
         }
 
         if (paused) {
-            g.setColor(new Color(0, 0, 0));
-            g.setFont(new Font("Arial", Font.BOLD, 12));
-            g.drawString("Paused", 100, 70);
-            g.setFont(new Font("Arial", Font.BOLD, 12));
+            graphics.setColor(new Color(0, 0, 0));
+            graphics.setFont(new Font("Arial", Font.BOLD, 12));
+            graphics.drawString("Paused", 100, 70);
+            graphics.setFont(new Font("Arial", Font.BOLD, 12));
             for (int i = 0; i < menuOptions.length; i++) {
                 if (i == currentChoice) {
-                    g.setColor(Color.LIGHT_GRAY);
+                    graphics.setColor(Color.LIGHT_GRAY);
                 } else {
-                    g.setColor(Color.BLACK);
+                    graphics.setColor(Color.BLACK);
                 }
-                g.drawString(menuOptions[i], 30, 140 + i * 15);
+                graphics.drawString(menuOptions[i], 30, 140 + i * 15);
             }
         }
     }

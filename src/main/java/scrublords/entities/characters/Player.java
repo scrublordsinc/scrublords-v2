@@ -8,10 +8,12 @@ import scrublords.entities.core.*;
 import scrublords.entities.core.Character;
 import scrublords.entities.enemies.Enemy;
 import scrublords.main.GamePanel;
+import scrublords.states.CharState;
 import scrublords.tilemaps.TileMap;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * @author Denis Dimitrov <denis.k.dimitrov@gmail.com>.
@@ -47,9 +49,24 @@ public class Player {
         moveSet = new MoveSet(false, false, false, false, false);
     }
 
+    public void lifeSteal(Enemy enemy) {
+        if (!enemy.enemyStats.dead && character.health < character.maxHealth) {
+            character.health += 1;
+        }
+    }
+
     public void checkDamageTaken(Enemy enemy) {
         if (collision.hitboxIntersection(enemy)) {
-            onDamageTaken(enemy.getDamage());
+            if (Objects.equals(CharState.character, "berserker")) {
+                onDamageTaken(enemy.getDamage());
+            }
+            if (Objects.equals(CharState.character, "lich")) {
+                Random random = new Random();
+                int evadeChance = random.nextInt(100);
+                if (evadeChance == 99) {
+                    onDamageTaken(enemy.getDamage());
+                }
+            }
         }
     }
 
@@ -139,9 +156,6 @@ public class Player {
             return;
         }
         character.health -= damageTaken;
-        if (character.health < 0) {
-            character.health = 0;
-        }
         if (character.health <= 0) {
             isDead();
         }
@@ -204,7 +218,8 @@ public class Player {
                 && enemy.collision.characterMapPlacement.getx() < collision.characterMapPlacement.x + character.attackRange
                 && enemy.collision.characterMapPlacement.gety() > collision.characterMapPlacement.y - spriteDimensions.height / 2
                 && enemy.collision.characterMapPlacement.gety() < collision.characterMapPlacement.y + spriteDimensions.height / 2) {
-            enemy.onDamageTaken(character.attackDamage);
+            lifeSteal(enemy);
+            enemy.onDamageTaken(character.attackDamage, this);
         }
     }
 
@@ -213,7 +228,8 @@ public class Player {
                 && enemy.collision.characterMapPlacement.getx() > collision.characterMapPlacement.x - character.attackRange
                 && enemy.collision.characterMapPlacement.gety() > collision.characterMapPlacement.y - spriteDimensions.height / 2
                 && enemy.collision.characterMapPlacement.gety() < collision.characterMapPlacement.y + spriteDimensions.height / 2) {
-            enemy.onDamageTaken(character.attackDamage);
+            lifeSteal(enemy);
+            enemy.onDamageTaken(character.attackDamage, this);
         }
     }
 }

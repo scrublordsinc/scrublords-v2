@@ -4,6 +4,7 @@ import scrublords.core.CollisionDetection;
 import scrublords.core.SpriteDimensions;
 import scrublords.core.SpriteSheet;
 import scrublords.core.Visualization;
+import scrublords.entities.characters.Player;
 import scrublords.entities.core.*;
 import scrublords.states.Stage;
 import scrublords.tilemaps.TileMap;
@@ -99,12 +100,16 @@ public class Enemy {
         return enemyStats.attackDamage;
     }
 
-    public void onDamageTaken(int damage) {
+    public void onDamageTaken(int damage, Player player) {
         if (enemyStats.dead || enemyStats.flinching) {
             return;
         }
         enemyStats.health -= damage;
         if (enemyStats.health <= 0) {
+            player.experience++;
+            if (player.experience >= player.level) {
+                player.level++;
+            }
             enemyStats.dead = true;
         }
         enemyStats.flinching = true;

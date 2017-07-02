@@ -9,9 +9,11 @@ import scrublords.entities.enemies.Enemy;
 import scrublords.entities.enemies.Slugger;
 import scrublords.main.GamePanel;
 import scrublords.main.State;
+import scrublords.misc.BossMechanics;
 import scrublords.misc.Timer;
 import scrublords.tilemaps.Background;
 import scrublords.tilemaps.TileMap;
+import scrublords.entities.enemies.LevelOneBoss;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -36,6 +38,7 @@ public class Stage implements State {
     private ArrayList<Enemy> enemies;
     private EnemyMovement enemyMovement;
     private Slugger slugger;
+    private LevelOneBoss levelOneBoss;
     private int enemyNumber = 10;
     private ArrayList<String> levels = new ArrayList<>();
     private int currentChoice = 0;
@@ -44,6 +47,7 @@ public class Stage implements State {
     private AtomicBoolean flag = new AtomicBoolean(true);
     private boolean upgradeComplete;
     private boolean spawnComplete;
+    private BossMechanics bossMechanics = new BossMechanics();
     private Timer timer = new Timer(flag);
     private Thread thread = new Thread(timer);
     private String[] menuOptions = {
@@ -87,9 +91,13 @@ public class Stage implements State {
                 if (enemy.enemyStats.dead) {
                     enemies.remove(i);
                     enemy.enemyStats.dead = false;
+                    if (i == enemies.size()) {
+                        bossMechanics.bossBattleEndTeleport();
+                    }
                 }
             }
         }
+        bossMechanics.levelOneBossBattleStartTeleport(player);
     }
 
     @Override
@@ -208,8 +216,10 @@ public class Stage implements State {
         }
         slugger = new Slugger(tileMap);
         enemies = new ArrayList<>();
+        levelOneBoss = new LevelOneBoss(tileMap);
         enemySpawner = new EnemySpawner();
         enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
+        enemySpawner.spawnBosses(3880, 200, tileMap, levelOneBoss.spriteSheet, levelOneBoss.enemyStats, levelOneBoss.movement, enemies);
     }
 
     private void loadLevelTwo() {

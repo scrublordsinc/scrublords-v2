@@ -49,6 +49,14 @@ public class EnemySpawner {
         }
     }
 
+    public void spawnBosses(int bossXSpawnCoordinate, int bossYSpawnCoordinate, TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies) {
+        enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
+
+        enemySpawnPoint = new Point(bossXSpawnCoordinate, bossYSpawnCoordinate);
+        enemy.collision.characterMapPlacement.setPosition(enemySpawnPoint.x, enemySpawnPoint.y);
+        enemies.add(enemy);
+    }
+
     private boolean whenNearPlayer(Player player, int leftRange, int rightRange) {
         return enemyXSpawnCoordinate > player.collision.characterMapPlacement.x - leftRange && enemyXSpawnCoordinate < player.collision.characterMapPlacement.x + rightRange;
     }
